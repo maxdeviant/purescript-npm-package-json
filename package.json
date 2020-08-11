@@ -1,0 +1,15 @@
+{
+  "name": "purescript-npm-package-json",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:maxdeviant/purescript-npm-package-json.git",
+  "author": "Marshall Bowers <elliott.codes@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "format": "purty --write src/"
+  },
+  "devDependencies": {
+    "prettier": "^2.0.5",
+    "purty": "^6.2.0"
+  }
+}
