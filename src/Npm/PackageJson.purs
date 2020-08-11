@@ -33,6 +33,7 @@ import Data.Maybe (Maybe(..))
 import Foreign.Object (Object)
 import Foreign.Object as Object
 
+-- | An npm [package.json](https://docs.npmjs.com/files/package.json) file.
 newtype PackageJson
   = PackageJson
   { name :: String
