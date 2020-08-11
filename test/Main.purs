@@ -1,18 +1,20 @@
 module Test.Main where
 
 import Prelude
-import Data.Argonaut (decodeJson, parseJson)
-import Data.Either (fromRight)
+import Data.Argonaut (decodeJson, parseJson, printJsonDecodeError)
+import Data.Either (either)
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Aff (launchAff_)
+import Effect.Class (liftEffect)
+import Effect.Exception (throw)
 import Npm.PackageJson (PackageJson(..))
 import Test.Spec (describe, it)
 import Test.Spec.Assertions (shouldEqual)
 import Test.Spec.Reporter (consoleReporter)
 import Test.Spec.Runner (runSpec)
 
-main :: Partial => Effect Unit
+main :: Effect Unit
 main =
   launchAff_
     $ runSpec [ consoleReporter ] do
@@ -28,10 +30,8 @@ main =
                     "description": "This package does awesome stuff!"
                   }
                   """
-              let
-                json' = fromRight $ parseJson json
-              let
-                actual = fromRight $ decodeJson json'
+              json' <- either (liftEffect <<< throw <<< printJsonDecodeError) pure $ parseJson json
+              actual <- either (liftEffect <<< throw <<< printJsonDecodeError) pure $ decodeJson json'
               let
                 expected =
                   PackageJson
