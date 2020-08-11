@@ -1,0 +1,1 @@
+# purescript-npm-package-json
