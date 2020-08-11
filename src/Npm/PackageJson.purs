@@ -5,7 +5,25 @@ module Npm.PackageJson
 
 import Prelude
 import Control.Alt ((<|>))
-import Data.Argonaut (class DecodeJson, class EncodeJson, Json, JsonDecodeError(..), caseJsonObject, caseJsonString, decodeJson, encodeJson, jsonEmptyObject, stringify, (.!=), (.:), (.:?), (:=), (:=?), (~>), (~>?))
+import Data.Argonaut
+  ( class DecodeJson
+  , class EncodeJson
+  , Json
+  , JsonDecodeError(..)
+  , caseJsonObject
+  , caseJsonString
+  , decodeJson
+  , encodeJson
+  , jsonEmptyObject
+  , stringify
+  , (.!=)
+  , (.:)
+  , (.:?)
+  , (:=)
+  , (:=?)
+  , (~>)
+  , (~>?)
+  )
 import Data.Either (Either(..))
 import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Eq (genericEq)
