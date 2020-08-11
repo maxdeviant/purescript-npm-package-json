@@ -6,7 +6,8 @@
   "author": "Marshall Bowers <elliott.codes@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "format": "purty --write src/"
+    "format": "purty --write src/ && purty --write test/",
+    "test": "spago -x test/test.dhall test"
   },
   "devDependencies": {
     "prettier": "^2.0.5",
