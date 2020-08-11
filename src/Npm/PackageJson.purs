@@ -74,7 +74,12 @@ instance eqBin :: Eq Bin where
 instance encodeJsonBin :: EncodeJson Bin where
   encodeJson bin = case bin of
     BinPath path -> encodeJson path
-    BinPaths paths -> encodeJson paths
+    BinPaths paths ->
+      encodeJson
+        $ (Object.fromFoldable :: Array _ -> Object Json)
+        <<< Map.toUnfoldable
+        <<< Map.mapMaybe (Just <<< encodeJson)
+        $ paths
 
 instance decodeJsonBin :: DecodeJson Bin where
   decodeJson json = do
