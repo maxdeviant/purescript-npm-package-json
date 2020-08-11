@@ -71,24 +71,28 @@ derive instance genericBin :: Generic Bin _
 instance eqBin :: Eq Bin where
   eq = genericEq
 
+mapToObject :: Map String String -> Object Json
+mapToObject =
+  fromFoldable
+    <<< Map.toUnfoldable
+    <<< Map.mapMaybe (Just <<< encodeJson)
+  where
+  fromFoldable = Object.fromFoldable :: Array _ -> Object Json
+
+mapFromObject :: Object Json -> Map String String
+mapFromObject =
+  Map.mapMaybe (caseJsonString Nothing Just)
+    <<< Map.fromFoldable
+    <<< toUnfoldable
+  where
+  toUnfoldable = Object.toUnfoldable :: Object Json -> Array _
+
 instance encodeJsonBin :: EncodeJson Bin where
   encodeJson bin = case bin of
     BinPath path -> encodeJson path
-    BinPaths paths ->
-      encodeJson
-        $ (Object.fromFoldable :: Array _ -> Object Json)
-        <<< Map.toUnfoldable
-        <<< Map.mapMaybe (Just <<< encodeJson)
-        $ paths
+    BinPaths paths -> encodeJson $ mapToObject $ paths
 
 instance decodeJsonBin :: DecodeJson Bin where
   decodeJson json = do
     caseJsonString (Left MissingValue) (Right <<< BinPath) json
-      <|> caseJsonObject (Left MissingValue)
-          ( Right
-              <<< BinPaths
-              <<< Map.mapMaybe (caseJsonString Nothing Just)
-              <<< Map.fromFoldable
-              <<< (Object.toUnfoldable :: Object Json -> Array _)
-          )
-          json
+      <|> caseJsonObject (Left MissingValue) (Right <<< BinPaths <<< mapFromObject) json
