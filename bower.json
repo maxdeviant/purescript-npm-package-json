@@ -1,15 +1,22 @@
 {
-  "name": "purescript-npm-package-json",
-  "license": ["MIT"],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/maxdeviant/purescript-npm-package-json"
-  },
-  "ignore": ["**/.*", "node_modules", "bower_components", "output"],
-  "dependencies": {
-    "purescript-argonaut": "^v7.0.0",
-    "purescript-console": "^v4.4.0",
-    "purescript-effect": "^v2.0.1",
-    "purescript-psci-support": "^v4.0.0"
-  }
+    "name": "purescript-npm-package-json",
+    "license": [
+        "MIT"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/maxdeviant/purescript-npm-package-json"
+    },
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "output"
+    ],
+    "dependencies": {
+        "purescript-argonaut": "^v7.0.0",
+        "purescript-console": "^v4.4.0",
+        "purescript-effect": "^v2.0.1",
+        "purescript-psci-support": "^v4.0.0"
+    }
 }
