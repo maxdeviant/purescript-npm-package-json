@@ -1,5 +1,6 @@
 module Npm.PackageJson
   ( PackageJson(..)
+  , Person(..)
   , Bin(..)
   ) where
 
@@ -41,6 +42,8 @@ newtype PackageJson
   , description :: Maybe String
   , keywords :: Array String
   , homepage :: Maybe String
+  , author :: Maybe Person
+  , contributors :: Maybe (Array Person)
   , bin :: Maybe Bin
   }
 
@@ -63,6 +66,10 @@ instance encodeJsonPackageJson :: EncodeJson PackageJson where
       := packageJson.keywords
       ~> "homepage"
       :=? packageJson.homepage
+      ~>? "author"
+      :=? packageJson.author
+      ~>? "contributors"
+      :=? packageJson.contributors
       ~>? "bin"
       :=? packageJson.bin
       ~>? jsonEmptyObject
@@ -75,6 +82,8 @@ instance decodeJsonPackageJson :: DecodeJson PackageJson where
     description <- json' .:? "description"
     keywords <- json' .:? "keywords" .!= mempty
     homepage <- json' .:? "homepage"
+    author <- json' .:? "author"
+    contributors <- json' .:? "contributors"
     bin <- json' .:? "bin"
     pure
       $ PackageJson
@@ -83,8 +92,37 @@ instance decodeJsonPackageJson :: DecodeJson PackageJson where
           , description
           , keywords
           , homepage
+          , author
+          , contributors
           , bin
           }
+
+data Person =
+  Person
+    { name :: String
+    , email :: Maybe String
+    , url :: Maybe String
+    }
+
+derive instance genericPerson :: Generic Person _
+
+instance eqPerson :: Eq Person where
+  eq = genericEq
+
+instance encodeJsonPerson :: EncodeJson Person where
+  encodeJson (Person person) = do
+    "name" := person.name
+      ~> "email" :=? person.email
+      ~>? "url" :=? person.url
+      ~>? jsonEmptyObject
+
+instance decodeJsonPerson :: DecodeJson Person where
+  decodeJson json = do
+    json' <- decodeJson json
+    name <- json' .: "name"
+    email <- json' .:? "email"
+    url <- json' .:? "url"
+    pure $ Person { name, email, url}
 
 data Bin
   = BinPath String

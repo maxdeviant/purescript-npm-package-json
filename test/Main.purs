@@ -41,6 +41,8 @@ main =
                     , description: Just $ "This package does awesome stuff!"
                     , keywords: []
                     , homepage: Nothing
+                    , author: Nothing
+                    , contributors: Nothing
                     , bin: Nothing
                     }
               actual `shouldEqual` expected
@@ -65,6 +67,8 @@ main =
                     , description: Nothing
                     , keywords: []
                     , homepage: Nothing
+                    , author: Nothing
+                    , contributors: Nothing
                     , bin: Just $ BinPath "./cli.js"
                     }
               actual `shouldEqual` expected
@@ -91,6 +95,8 @@ main =
                     , description: Nothing
                     , keywords: []
                     , homepage: Nothing
+                    , author: Nothing
+                    , contributors: Nothing
                     , bin:
                         Just $ BinPaths $ mempty
                           # Map.insert "bin-a" "./a.js"
