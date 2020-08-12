@@ -45,6 +45,7 @@ type PackageJsonContent
     , author :: Maybe Person
     , contributors :: Maybe (Array Person)
     , bin :: Maybe Bin
+    , private :: Maybe Boolean
     }
 
 -- | An npm [package.json](https://docs.npmjs.com/files/package.json) file.
@@ -66,6 +67,7 @@ fromNameAndVersion name version =
     , author: Nothing
     , contributors: Nothing
     , bin: Nothing
+    , private: Nothing
     }
 
 derive instance genericPackageJson :: Generic PackageJson _
@@ -93,6 +95,8 @@ instance encodeJsonPackageJson :: EncodeJson PackageJson where
       :=? packageJson.contributors
       ~>? "bin"
       :=? packageJson.bin
+      ~>? "private"
+      :=? packageJson.private
       ~>? jsonEmptyObject
 
 instance decodeJsonPackageJson :: DecodeJson PackageJson where
@@ -106,6 +110,7 @@ instance decodeJsonPackageJson :: DecodeJson PackageJson where
     author <- json' .:? "author"
     contributors <- json' .:? "contributors"
     bin <- json' .:? "bin"
+    private <- json' .:? "private"
     pure
       $ PackageJson
           { name
@@ -116,6 +121,7 @@ instance decodeJsonPackageJson :: DecodeJson PackageJson where
           , author
           , contributors
           , bin
+          , private
           }
 
 data Person
