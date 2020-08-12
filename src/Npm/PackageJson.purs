@@ -1,5 +1,8 @@
 module Npm.PackageJson
-  ( PackageJson(..)
+  ( PackageJsonContent
+  , PackageJson(..)
+  , map
+  , fromNameAndVersion
   , Person(..)
   , Bin(..)
   ) where
@@ -33,18 +36,37 @@ import Data.Maybe (Maybe(..))
 import Foreign.Object (Object)
 import Foreign.Object as Object
 
+type PackageJsonContent
+  = { name :: String
+    , version :: String
+    , description :: Maybe String
+    , keywords :: Maybe (Array String)
+    , homepage :: Maybe String
+    , author :: Maybe Person
+    , contributors :: Maybe (Array Person)
+    , bin :: Maybe Bin
+    }
+
 -- | An npm [package.json](https://docs.npmjs.com/files/package.json) file.
 newtype PackageJson
-  = PackageJson
-  { name :: String
-  , version :: String
-  , description :: Maybe String
-  , keywords :: Maybe (Array String)
-  , homepage :: Maybe String
-  , author :: Maybe Person
-  , contributors :: Maybe (Array Person)
-  , bin :: Maybe Bin
-  }
+  = PackageJson PackageJsonContent
+
+map :: (PackageJsonContent -> PackageJsonContent) -> PackageJson -> PackageJson
+map f (PackageJson packageJson) = PackageJson $ f packageJson
+
+-- | Creates a new `PackageJson` from a name and a version.
+fromNameAndVersion :: String -> String -> PackageJson
+fromNameAndVersion name version =
+  PackageJson
+    { name
+    , version
+    , description: Nothing
+    , keywords: Nothing
+    , homepage: Nothing
+    , author: Nothing
+    , contributors: Nothing
+    , bin: Nothing
+    }
 
 derive instance genericPackageJson :: Generic PackageJson _
 
@@ -96,8 +118,8 @@ instance decodeJsonPackageJson :: DecodeJson PackageJson where
           , bin
           }
 
-data Person =
-  Person
+data Person
+  = Person
     { name :: String
     , email :: Maybe String
     , url :: Maybe String
@@ -111,8 +133,10 @@ instance eqPerson :: Eq Person where
 instance encodeJsonPerson :: EncodeJson Person where
   encodeJson (Person person) = do
     "name" := person.name
-      ~> "email" :=? person.email
-      ~>? "url" :=? person.url
+      ~> "email"
+      :=? person.email
+      ~>? "url"
+      :=? person.url
       ~>? jsonEmptyObject
 
 instance decodeJsonPerson :: DecodeJson Person where
@@ -121,7 +145,7 @@ instance decodeJsonPerson :: DecodeJson Person where
     name <- json' .: "name"
     email <- json' .:? "email"
     url <- json' .:? "url"
-    pure $ Person { name, email, url}
+    pure $ Person { name, email, url }
 
 data Bin
   = BinPath String

@@ -9,7 +9,8 @@ import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
 import Effect.Exception (throw)
-import Npm.PackageJson (Bin(..), PackageJson(..))
+import Npm.PackageJson (Bin(..), fromNameAndVersion)
+import Npm.PackageJson as PackageJson
 import Test.Spec (describe, it)
 import Test.Spec.Assertions (shouldEqual)
 import Test.Spec.Reporter (consoleReporter)
@@ -35,16 +36,8 @@ main =
               actual <- either (liftEffect <<< throw <<< printJsonDecodeError) pure $ decodeJson json'
               let
                 expected =
-                  PackageJson
-                    { name: "my-awesome-package"
-                    , version: "1.0.0"
-                    , description: Just $ "This package does awesome stuff!"
-                    , keywords: Nothing
-                    , homepage: Nothing
-                    , author: Nothing
-                    , contributors: Nothing
-                    , bin: Nothing
-                    }
+                  fromNameAndVersion "my-awesome-package" "1.0.0"
+                    # PackageJson.map _ { description = Just $ "This package does awesome stuff!" }
               actual `shouldEqual` expected
           describe "bin" do
             it "works when bin is a string" do
@@ -61,16 +54,8 @@ main =
               actual <- either (liftEffect <<< throw <<< printJsonDecodeError) pure $ decodeJson json'
               let
                 expected =
-                  PackageJson
-                    { name: "my-awesome-package"
-                    , version: "1.0.0"
-                    , description: Nothing
-                    , keywords: Nothing
-                    , homepage: Nothing
-                    , author: Nothing
-                    , contributors: Nothing
-                    , bin: Just $ BinPath "./cli.js"
-                    }
+                  fromNameAndVersion "my-awesome-package" "1.0.0"
+                    # PackageJson.map _ { bin = Just $ BinPath "./cli.js" }
               actual `shouldEqual` expected
             it "works when bin is an object" do
               let
@@ -89,17 +74,12 @@ main =
               actual <- either (liftEffect <<< throw <<< printJsonDecodeError) pure $ decodeJson json'
               let
                 expected =
-                  PackageJson
-                    { name: "my-awesome-package"
-                    , version: "1.0.0"
-                    , description: Nothing
-                    , keywords: Nothing
-                    , homepage: Nothing
-                    , author: Nothing
-                    , contributors: Nothing
-                    , bin:
-                        Just $ BinPaths $ mempty
-                          # Map.insert "bin-a" "./a.js"
-                          # Map.insert "bin-b" "./b.js"
-                    }
+                  fromNameAndVersion "my-awesome-package" "1.0.0"
+                    # PackageJson.map
+                        _
+                          { bin =
+                            Just $ BinPaths $ mempty
+                              # Map.insert "bin-a" "./a.js"
+                              # Map.insert "bin-b" "./b.js"
+                          }
               actual `shouldEqual` expected
