@@ -40,6 +40,7 @@ newtype PackageJson
   , version :: String
   , description :: Maybe String
   , keywords :: Array String
+  , homepage :: Maybe String
   , bin :: Maybe Bin
   }
 
@@ -60,7 +61,9 @@ instance encodeJsonPackageJson :: EncodeJson PackageJson where
       :=? packageJson.description
       ~>? "keywords"
       := packageJson.keywords
-      ~> "bin"
+      ~> "homepage"
+      :=? packageJson.homepage
+      ~>? "bin"
       :=? packageJson.bin
       ~>? jsonEmptyObject
 
@@ -71,6 +74,7 @@ instance decodeJsonPackageJson :: DecodeJson PackageJson where
     version <- json' .: "version"
     description <- json' .:? "description"
     keywords <- json' .:? "keywords" .!= mempty
+    homepage <- json' .:? "homepage"
     bin <- json' .:? "bin"
     pure
       $ PackageJson
@@ -78,6 +82,7 @@ instance decodeJsonPackageJson :: DecodeJson PackageJson where
           , version
           , description
           , keywords
+          , homepage
           , bin
           }
 

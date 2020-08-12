@@ -40,6 +40,7 @@ main =
                     , version: "1.0.0"
                     , description: Just $ "This package does awesome stuff!"
                     , keywords: []
+                    , homepage: Nothing
                     , bin: Nothing
                     }
               actual `shouldEqual` expected
@@ -63,6 +64,7 @@ main =
                     , version: "1.0.0"
                     , description: Nothing
                     , keywords: []
+                    , homepage: Nothing
                     , bin: Just $ BinPath "./cli.js"
                     }
               actual `shouldEqual` expected
@@ -88,6 +90,7 @@ main =
                     , version: "1.0.0"
                     , description: Nothing
                     , keywords: []
+                    , homepage: Nothing
                     , bin:
                         Just $ BinPaths $ mempty
                           # Map.insert "bin-a" "./a.js"
