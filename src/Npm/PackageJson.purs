@@ -17,7 +17,6 @@ import Data.Argonaut
   , encodeJson
   , jsonEmptyObject
   , stringify
-  , (.!=)
   , (.:)
   , (.:?)
   , (:=)
@@ -40,7 +39,7 @@ newtype PackageJson
   { name :: String
   , version :: String
   , description :: Maybe String
-  , keywords :: Array String
+  , keywords :: Maybe (Array String)
   , homepage :: Maybe String
   , author :: Maybe Person
   , contributors :: Maybe (Array Person)
@@ -63,8 +62,8 @@ instance encodeJsonPackageJson :: EncodeJson PackageJson where
       ~> "description"
       :=? packageJson.description
       ~>? "keywords"
-      := packageJson.keywords
-      ~> "homepage"
+      :=? packageJson.keywords
+      ~>? "homepage"
       :=? packageJson.homepage
       ~>? "author"
       :=? packageJson.author
@@ -80,7 +79,7 @@ instance decodeJsonPackageJson :: DecodeJson PackageJson where
     name <- json' .: "name"
     version <- json' .: "version"
     description <- json' .:? "description"
-    keywords <- json' .:? "keywords" .!= mempty
+    keywords <- json' .:? "keywords"
     homepage <- json' .:? "homepage"
     author <- json' .:? "author"
     contributors <- json' .:? "contributors"

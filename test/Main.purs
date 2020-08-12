@@ -39,7 +39,7 @@ main =
                     { name: "my-awesome-package"
                     , version: "1.0.0"
                     , description: Just $ "This package does awesome stuff!"
-                    , keywords: []
+                    , keywords: Nothing
                     , homepage: Nothing
                     , author: Nothing
                     , contributors: Nothing
@@ -65,7 +65,7 @@ main =
                     { name: "my-awesome-package"
                     , version: "1.0.0"
                     , description: Nothing
-                    , keywords: []
+                    , keywords: Nothing
                     , homepage: Nothing
                     , author: Nothing
                     , contributors: Nothing
@@ -93,7 +93,7 @@ main =
                     { name: "my-awesome-package"
                     , version: "1.0.0"
                     , description: Nothing
-                    , keywords: []
+                    , keywords: Nothing
                     , homepage: Nothing
                     , author: Nothing
                     , contributors: Nothing
