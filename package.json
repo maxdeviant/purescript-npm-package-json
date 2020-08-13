@@ -6,13 +6,14 @@
   "author": "Marshall Bowers <elliott.codes@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "format": "purty --write src/ && purty --write test/",
+    "format": "purlin format && purty --write test/",
+    "build": "purlin build",
     "test": "spago -x test/test.dhall test",
     "bump-version": "spago bump-version"
   },
   "devDependencies": {
     "bower": "^1.8.8",
     "prettier": "^2.0.5",
-    "purty": "^6.2.0"
+    "purlin": "^0.1.0"
   }
 }
