@@ -291,10 +291,10 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-purlin@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/purlin/-/purlin-0.1.5.tgz#01277543abd084ea0060e16590413cecbc565144"
-  integrity sha512-cLoOGH3AzwLAtaie7q3AV5wn/DsEQtQj7ibwc0tjnjn8Ay9zBYvF8DMAE9cMCaZaab356mwLZ7F0aoR5itx8UA==
+purlin@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/purlin/-/purlin-0.1.7.tgz#fb9f4c75b3ee8d42dc06d70f41ff8ef848171db1"
+  integrity sha512-7LHNErRvJ93pPxQnkxhTEmyEWQM5qklucUF2roI2MIQsf5fisciCILSuLbUP45J/D4mt4F+7Q774n8ZLWAcc5w==
   dependencies:
     cross-spawn "^7.0.3"
     prettier "^2.0.5"
