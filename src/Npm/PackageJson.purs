@@ -4,6 +4,7 @@ module Npm.PackageJson
   , map
   , fromNameAndVersion
   , Person(..)
+  , Author(..)
   , Bin(..)
   ) where
 
@@ -42,7 +43,7 @@ type PackageJsonContent
     , description :: Maybe String
     , keywords :: Maybe (Array String)
     , homepage :: Maybe String
-    , author :: Maybe Person
+    , author :: Maybe Author
     , contributors :: Maybe (Array Person)
     , bin :: Maybe Bin
     , private :: Maybe Boolean
@@ -152,6 +153,39 @@ instance decodeJsonPerson :: DecodeJson Person where
     email <- json' .:? "email"
     url <- json' .:? "url"
     pure $ Person { name, email, url }
+
+data Author
+  = AuthorString String
+  | Author Person
+
+derive instance genericAuthor :: Generic Author _
+
+instance eqAuthor :: Eq Author where
+  eq = genericEq
+
+decodePersonFoo :: Json -> Either JsonDecodeError Person
+decodePersonFoo = decodeJson
+
+instance encodeJsonAuthor :: EncodeJson Author where
+  encodeJson author = case author of
+    AuthorString value -> encodeJson value
+    Author value -> encodeJson value
+
+instance decodeJsonAuthor :: DecodeJson Author where
+  decodeJson json = do
+    decodeAuthorString json
+      <|> decodeAuthor json
+    where
+    decodeAuthorString :: Json -> Either JsonDecodeError Author
+    decodeAuthorString json' = do
+      json'' <- decodeJson json'
+      pure $ AuthorString json''
+
+    decodeAuthor :: Json -> Either JsonDecodeError Author
+    decodeAuthor json' = do
+      json'' <- decodeJson json'
+      person <- decodeJson json''
+      pure $ Author person
 
 data Bin
   = BinPath String

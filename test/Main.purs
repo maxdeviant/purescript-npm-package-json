@@ -9,7 +9,7 @@ import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
 import Effect.Exception (throw)
-import Npm.PackageJson (Bin(..), fromNameAndVersion)
+import Npm.PackageJson (Author(..), Bin(..), Person(..), fromNameAndVersion)
 import Npm.PackageJson as PackageJson
 import Test.Spec (describe, it)
 import Test.Spec.Assertions (shouldEqual)
@@ -38,6 +38,44 @@ main =
                 expected =
                   fromNameAndVersion "my-awesome-package" "1.0.0"
                     # PackageJson.map _ { description = Just $ "This package does awesome stuff!" }
+              actual `shouldEqual` expected
+          describe "author" do
+            it "works when author is a string" do
+              let
+                json =
+                  """
+                  {
+                    "name": "my-awesome-package",
+                    "version": "1.0.0",
+                    "author": "Awesome Maintainer <awesome@example.com>"
+                  }
+                  """
+              json' <- either (liftEffect <<< throw <<< printJsonDecodeError) pure $ parseJson json
+              actual <- either (liftEffect <<< throw <<< printJsonDecodeError) pure $ decodeJson json'
+              let
+                expected =
+                  fromNameAndVersion "my-awesome-package" "1.0.0"
+                    # PackageJson.map _ { author = Just $ AuthorString "Awesome Maintainer <awesome@example.com>" }
+              actual `shouldEqual` expected
+            it "works when author is an object" do
+              let
+                json =
+                  """
+                  {
+                    "name": "my-awesome-package",
+                    "version": "1.0.0",
+                    "author": {
+                      "name": "Awesome Maintainer",
+                      "email": "awesome@example.com"
+                    }
+                  }
+                  """
+              json' <- either (liftEffect <<< throw <<< printJsonDecodeError) pure $ parseJson json
+              actual <- either (liftEffect <<< throw <<< printJsonDecodeError) pure $ decodeJson json'
+              let
+                expected =
+                  fromNameAndVersion "my-awesome-package" "1.0.0"
+                    # PackageJson.map _ { author = Just $ Author $ Person { name: "Awesome Maintainer", email: Just "awesome@example.com", url: Nothing } }
               actual `shouldEqual` expected
           describe "bin" do
             it "works when bin is a string" do
