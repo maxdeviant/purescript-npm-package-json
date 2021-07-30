@@ -14,9 +14,13 @@
         "output"
     ],
     "dependencies": {
-        "purescript-argonaut": "^v7.0.0",
-        "purescript-console": "^v4.4.0",
-        "purescript-effect": "^v2.0.1",
-        "purescript-psci-support": "^v4.0.0"
+        "purescript-argonaut": "^v8.0.0",
+        "purescript-control": "^v5.0.0",
+        "purescript-either": "^v5.0.0",
+        "purescript-foreign-object": "^v3.0.0",
+        "purescript-maybe": "^v5.0.0",
+        "purescript-ordered-collections": "^v2.0.1",
+        "purescript-prelude": "^v5.0.1",
+        "purescript-psci-support": "^v5.0.0"
     }
 }
