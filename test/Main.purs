@@ -116,7 +116,7 @@ main =
                     # PackageJson.map
                         _
                           { bin =
-                            Just $ BinPaths $ mempty
+                            Just $ BinPaths $ Map.empty
                               # Map.insert "bin-a" "./a.js"
                               # Map.insert "bin-b" "./b.js"
                           }

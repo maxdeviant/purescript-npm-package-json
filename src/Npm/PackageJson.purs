@@ -29,8 +29,8 @@ import Data.Argonaut
   , (~>?)
   )
 import Data.Either (Either(..))
+import Data.Eq.Generic (genericEq)
 import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Eq (genericEq)
 import Data.Map (Map)
 import Data.Map as Map
 import Data.Maybe (Maybe(..))
